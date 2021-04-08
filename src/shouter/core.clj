@@ -5,8 +5,6 @@
   [x]
   (println x "Hello, World!"))
 
-(foo "g")
-
 (require '[clojure.java.jdbc :as sql])
 
 (sql/db-do-commands "postgresql://localhost:5432/shouter"
