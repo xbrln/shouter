@@ -7,15 +7,12 @@
 
 (require '[clojure.java.jdbc :as sql])
 
-(sql/db-do-commands "postgresql://localhost:5432/shouter"
-                    (sql/create-table-ddl :testing [[:data :text]]))
+(def db-connection "postgres://localhost:5432/shouter")
 
-(sql/insert! "postgresql://localhost:5432/shouter"
-                    :testing {:data "Hello World 2"})
+(sql/db-do-commands db-connection (sql/create-table-ddl :testing [[:data :text]]))
 
+(sql/insert! db-connection :testing {:data "Hello World 2"})
 
-(sql/query "postgresql://localhost:5432/shouter"
-                  ["select * from testing"])
+(sql/query db-connection ["select * from testing"])
 
-(sql/db-do-commands "postgresql://localhost:5432/shouter"
-                           "drop table testing")
+(sql/db-do-commands db-connection "drop table testing")
