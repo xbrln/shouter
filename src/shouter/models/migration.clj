@@ -14,8 +14,8 @@
     (sql/db-do-commands shout/spec
                         (sql/create-table-ddl
                          :shouts
-                         [:id :serial "PRIMARY KEY"]
-                         [:body :varchar "NOT NULL"]
-                         [:created_at :timestamp
-                          "NOT NULL" "DEFAULT CURRENT_TIMESTAMP"]))
+                         [[:id :serial "PRIMARY KEY"]
+                          [:body :varchar "NOT NULL"]
+                          [:created_at :timestamp
+                           "NOT NULL" "DEFAULT CURRENT_TIMESTAMP"]]))
     (println " done")))
