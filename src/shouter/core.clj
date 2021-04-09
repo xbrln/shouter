@@ -1,18 +1,25 @@
-(ns shouter.core)
+(ns shouter.core
+  (:require [compojure.core :refer [defroutes]]
+            [ring.adapter.jetty :as ring]
+            [compojure.route :as route]
+            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+            [shouter.controllers.shouts :as shouts]
+            [shouter.views.layout :as layout]
+            [shouter.models.migration :as schema])
+  (:gen-class))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defroutes routes
+  shouts/routes
+  (route/resources "/")
+  (route/not-found (layout/four-oh-four)))
 
-(require '[clojure.java.jdbc :as sql])
+(def application (wrap-defaults routes site-defaults))
 
-(def db-connection "postgres://localhost:5432/shouter")
+(defn start [port]
+  (ring/run-jetty application {:port port
+                               :join? false}))
 
-(sql/db-do-commands db-connection (sql/create-table-ddl :testing [[:data :text]]))
-
-(sql/insert! db-connection :testing {:data "Hello World 2"})
-
-(sql/query db-connection ["select * from testing"])
-
-(sql/db-do-commands db-connection "drop table testing")
+(defn -main []
+  (schema/migrate)
+  (let [port (Integer. (or (System/getenv "PORT") "8080"))]
+    (start port)))

@@ -11,10 +11,10 @@
                  [compojure "1.4.0"]
                  [ring/ring-defaults "0.1.2"]
                  [hiccup "1.0.5"]]
-  :main ^:skip-aot shouter.web
+  :main ^:skip-aot shouter.core
   :uberjar-name "shouter-standalone.jar"
   :plugins [[lein-ring "0.8.13"]]
-  :ring {:handler shouter.web/application
+  :ring {:handler shouter.core/application
          :init shouter.models.migration/migrate}
   :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]]}
