@@ -2,7 +2,8 @@
 
 (require '[clojure.java.jdbc :as sql])
 
-(def db-connection "postgres://localhost:5432/shouter")
+(def db-connection (or (System/getenv "DATABASE_URL")
+                       "postgres://localhost:5432/shouter"))
 
 (sql/db-do-commands db-connection (sql/create-table-ddl :testing [[:data :text]]))
 
